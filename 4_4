@@ -1,0 +1,39 @@
+#include <iostream>
+#include <string>
+#include <math.h>
+using namespace std;
+
+
+
+int F(int number){
+    int eight_n{}, reversed{}, needed{};
+    cin >> number;
+    int step=0;
+
+    do{
+        eight_n+=(number % 8)*pow(10, step);
+        number/=8;
+        step++;
+    }while(number);
+
+    while(eight_n){
+        reversed = reversed*10+eight_n%10;
+        eight_n /= 10;
+    }
+
+    step=0;
+
+    do{
+        needed+=pow(8, step) * (reversed%10);
+        cout << reversed << endl;
+        reversed/=10;
+        step++;
+    }while(reversed);
+    return needed;
+}
+int main(){
+    int m{};
+    cin >> m;
+    cout << F(m);
+    return 0;
+}
