@@ -1,0 +1,34 @@
+#include <iostream>
+#include <string>
+#include <math.h>
+using namespace std;
+
+int main(){
+    const int N=100;
+    bool t=true;
+    int mas[N]{}, amount{};
+    for(int i{}; i<N; i++){
+        mas[i]=rand()%100;
+        cout<<mas[i]<<' ';
+    }
+
+    for(int i{}; i<N; i++){
+        if((mas[i]==0) && t){
+            amount+=1;
+            t=false;
+        }
+    }
+    for(int i{}; i<N; i++){
+        for(int j=(i+1); j<N; j++){
+            if(mas[i]==mas[j]){
+                mas[i]=0;
+            }
+        }
+        if(mas[i]!=0){
+            amount+=1;
+        }
+    }
+    cout << endl;
+    cout<< "Количество неповторяющихся элементов: "<<amount;
+    return 0;
+}
