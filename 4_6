@@ -1,0 +1,17 @@
+#include <iostream>
+#include <string>
+#include <math.h>
+using namespace std;
+
+int main(){
+    int sum{}, a{};
+    for(int i{}; i<390; i++){
+        cin >> a;
+        if((a>0) && (a<100)){
+            sum+=a;
+        }
+    }
+    cout << "Сумма последовательности " << sum;
+
+    return 0;
+}
