@@ -1,0 +1,31 @@
+
+#include <iostream>
+using namespace std;
+
+int main(){
+    int n1{}, n2{};
+
+    cin >> n1 >> n2;
+
+    for(int i=n1; i<=n2; i++){
+        for(int j=n2; j>i; j--){
+            int sum_m{};
+            int b=2, a=j;
+            do{
+                if(a%b==0){
+                    do{
+                        a=a/b;
+                    }while(a%b==0);
+                    sum_m+=b;
+                }
+                b++;
+            }while(a>1);
+
+            if (i==sum_m){
+                cout << i << " " << j << endl;
+            }
+        }
+    }
+
+    return 0;
+} 
