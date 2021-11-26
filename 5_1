@@ -9,7 +9,7 @@ int strspn_(char first[5], char second[5]){
         int j{};
         bool okay=false;
         while(j<=5 && !okay){
-            if(first[i]==second[j]){ //¥á«¨ ®­¨ á®¢¯ ¤ îâ â® áà ¢­¥­¨¥ ¯à¥ªà é ¥âáï
+            if(first[i]==second[j]){ //Â¥Ã¡Â«Â¨ Â®Â­Â¨ Ã¡Â®Â¢Â¯Â Â¤Â Ã®Ã¢ Ã¢Â® Ã¡Ã Â Â¢Â­Â¥Â­Â¨Â¥ Â¯Ã Â¥ÂªÃ Â Ã©Â Â¥Ã¢Ã¡Ã¯
                 okay=true;
                 break;
             }
@@ -33,7 +33,7 @@ int main(){
     cin >> second;
     k=strspn_(first, second);
     if(k==-1){
-        cout << "áâà®ª¨ ¯®«­®áâìî á®¢¯ ¤ îâ";
+        cout << "Ã¡Ã¢Ã Â®ÂªÂ¨ Â¯Â®Â«Â­Â®Ã¡Ã¢Ã¬Ã® Ã¡Â®Â¢Â¯Â Â¤Â Ã®Ã¢";
     }
     else{
         cout << k;
