@@ -25,23 +25,25 @@ int main() {
     int delta{};
     cout << "Введите начальное время в формате чч мм сс через пробел:" << endl;
     cin >> t.hours >> t.minutes >> t.seconds;
-    while(t.hours>24) {
-        cout<<"Введено неверное число часов, введите число с 00 до 23:"<< endl;
-        cin >> t.hours;
-    }
-    while(t.minutes>59){
-        cout<<"Введено неверное число минут, введите число с 00 до 59:"<< endl;
-        cin >> t.minutes;
-    }
-    while(t.seconds>59){
-        cout<<"Введено неверное число секунд, введите число с 00 до 59:"<< endl;
-        cin >> t.seconds;
+    while(t.hours>24 || t.minutes>59 || t.seconds>59) {
+        if (t.hours>24) {
+            cout << "Введено неверное число часов, введите число с 00 до 23:" << endl;
+            cin >> t.hours;
+        }
+        else if (t.minutes > 59) {
+            cout << "Введено неверное число минут, введите число с 00 до 59:" << endl;
+            cin >> t.minutes;
+        }
+        else if (t.seconds>59){
+            cout << "Введено неверное число секунд, введите число с 00 до 59:" << endl;
+            cin >> t.seconds;
+        }
     }
     cout <<"Введите разницу во времени:"<< endl;
     cin >> delta;
 
     t_next =NextTime(t, delta);
-    cout << "Текущее время: " << t.hours<< ":"<<  t.minutes << ":"<<t.seconds  << endl;
+    cout << "Текущее время:          " << t.hours<< ":"<<  t.minutes << ":"<<t.seconds  << endl;
     cout << "Время через "<< delta<<" секунд: " << t_next.hours<< ":"<<  t_next.minutes << ":"<<t_next.seconds  << endl;
     return 0;
 }
