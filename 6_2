@@ -1,0 +1,53 @@
+#include <iostream>
+using namespace std;
+
+struct DATES{
+    int year{};
+    char Whathappened[50];
+};
+
+void Sort(DATES* d, int n){
+    cout << "Для сортировки по датам введите 1 /n"<< "Для сортировки событий введите 2 /n";
+    for(int i{}; i<n; i++){
+        for (int j=i+1; j<n; j++ ){
+            if(d[i].year_enter > d[j].year_enter){
+                Copy_Elements(Buffer, d[j]);
+                Copy_Elements(d[j], d[i]);
+                Copy_Elements(d[i], Buffer);
+            }
+        }
+    }
+
+}
+void Sort(){
+
+}
+
+int main(){
+    int amount{};
+    cout <<"Введите количество исторических событий, которые хотите занести в базу данных:"<<endl;
+    cin >> amount;
+    DATES* d=new DATES[amount];
+
+    for(int i{}; i<amount; i++){
+        cout << "Введите год события:" << endl;
+        cin >> d[i].year ;
+        cout << "Введите название события:" << endl;
+        cin >> d[i].Whathappened;
+    }
+    int vibor{};
+    cout << "Для сортировки введите 1 /n" << "Для подсчета среднего интервала между датами введите 2 /n" << "Для вывода наиболее встречающейся первой буквы в названии введите 3 /n" ;
+    cin >> vibor;
+    switch(vibor){
+        case 1:
+            Sort()
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+    }
+
+
+    return 0;
+}
