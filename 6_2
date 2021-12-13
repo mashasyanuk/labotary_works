@@ -1,26 +1,109 @@
 #include <iostream>
+#include <math.h>
+#include <iomanip>
 using namespace std;
 
 struct DATES{
     int year{};
-    char Whathappened[50];
+    char name[50];
 };
 
 void Sort(DATES* d, int n){
-    cout << "Для сортировки по датам введите 1 /n"<< "Для сортировки событий введите 2 /n";
+    int vibor{};
+    cout << "Для сортировки по датам введите 1 \n"<< "Для сортировки событий введите 2 \n";
+    cin >> vibor;
+    switch (vibor){
+        case 1: //date
+            for(int i{}; i<n; i++){
+                for (int j=i+1; j<n; j++ ){
+                    if(d[i].year > d[j].year){
+                         DATES Buffer;
+                         Buffer.year=d[j].year;
+                         strcpy(Buffer.name, d[j].name);
+                         d[j].year=d[i].year;
+                         strcpy(d[j].name, d[i].name);
+                         d[i].year=Buffer.year;
+                         strcpy(d[i].name, Buffer.name);
+                    }
+                }
+            }
+            break;
+        case 2: //name
+            for(int i{}; i<n; i++){
+                for (int j=i+1; j<n; j++ ){
+                    if(d[i].name > d[j].name){
+                        DATES Buffer;
+                        Buffer.year=d[j].year;
+                        strcpy(Buffer.name, d[j].name);
+                        d[j].year=d[i].year;
+                        strcpy(d[j].name, d[i].name);
+                        d[i].year=Buffer.year;
+                        strcpy(d[i].name, Buffer.name);
+                    }
+                }
+            }
+            break;
+        default:
+            cout << "Введено неправильное значение. \n" ;
+            break;
+    }
+    for(int i{}; i<n; i++){
+        cout << fixed << setw(5) << d[i].year << "  " << d[i].name << endl;
+    }
+}
+
+void Search(DATES* d, int n){
+    int sum{}, need{};
+
     for(int i{}; i<n; i++){
         for (int j=i+1; j<n; j++ ){
-            if(d[i].year_enter > d[j].year_enter){
-                Copy_Elements(Buffer, d[j]);
-                Copy_Elements(d[j], d[i]);
-                Copy_Elements(d[i], Buffer);
+            sum+=abs(d[i].year-d[j].year);
+        }
+    }
+    need=sum/n;
+    cout << "Средний интервал между датами: " << need << endl;
+
+}
+
+void Most_often(DATES* d, int n){
+    char max_letter{};
+    int count=1, max{};
+
+    for(int i{}; i<n; i++){
+        for (int j=i+1; j<n; j++ ){
+            if(d[i].name > d[j].name){
+                DATES Buffer;
+                Buffer.year=d[j].year;
+                strcpy(Buffer.name, d[j].name);
+                d[j].year=d[i].year;
+                strcpy(d[j].name, d[i].name);
+                d[i].year=Buffer.year;
+                strcpy(d[i].name, Buffer.name);
             }
         }
     }
+    char current=d[0].name[0];
+    for(int i=1; i<n; i++){
+        if(d[i].name[0]==current){
+            count++;
+        }
+        else{
+            if(count>max){
+                max=count;
+                max_letter=current;
+            }
+            current=d[i].name[0];
+            count=1;
+        }
+    }
+    if(count>max){
+        max=count;
+    }
 
-}
-void Sort(){
-
+    if(max>1)
+        cout << "Наиболее часто встречающаяся буква:  " << max_letter<<", число совпадений: " << max << endl;
+    else
+        cout << "Первые буквы всех событий разные \n" ;
 }
 
 int main(){
@@ -33,21 +116,22 @@ int main(){
         cout << "Введите год события:" << endl;
         cin >> d[i].year ;
         cout << "Введите название события:" << endl;
-        cin >> d[i].Whathappened;
+        cin >> d[i].name;
     }
     int vibor{};
-    cout << "Для сортировки введите 1 /n" << "Для подсчета среднего интервала между датами введите 2 /n" << "Для вывода наиболее встречающейся первой буквы в названии введите 3 /n" ;
+    cout << "Для сортировки введите 1 \n" << "Для подсчета среднего интервала между датами введите 2 \n" << "Для вывода наиболее встречающейся первой буквы в названии введите 3 \n" ;
     cin >> vibor;
     switch(vibor){
         case 1:
-            Sort()
+            Sort(d, amount);
             break;
         case 2:
+            Search(d, amount);
             break;
         case 3:
+            Most_often(d, amount);
             break;
     }
-
 
     return 0;
 }
