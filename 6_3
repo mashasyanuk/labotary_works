@@ -1,33 +1,19 @@
 #include <iostream>
 using namespace std;
 
-void Rectangle intersect(Rectangle r1, Rectangle r2)
-{
-    Rectangle inter;
-    if (r1.p1.x < r2.p2.x || r1.p2.x > r2.p1.x || r1.p1.y < r2.p2.y || r1.p2.y > r2.p1.y) // не пересекаются
-    {
-        inter.p1.x = inter.p1.y = inter.p2.x = inter.p2.y = 0;
-    }
-    else
-    {
-       inter.p1.x = r1.p1.x < r2.p1.x ? r2.p1.x : r1.p1.x;
-       inter.p2.x = r1.p2.x < r2.p2.x ? r1.p2.x : r2.p2.x;
-       inter.p1.y = r1.p1.y < r2.p1.y ? r1.p1.y : r2.p1.y;
-       inter.p2.y = r1.p2.y < r2.p2.y ? r2.p2.y : r1.p2.y;
-    }
-    return inter;
-}
-int main(){
-structure Point
-int x{}, y{};
-structure Rectangle{
-Point p1{}, p2{};
+struct Point{
+    int x{}, y{};
+};  
+
+struct Rectangle{
+    Point p1{}, p2{};
 };
+    
 
 Rectangle intersect(Rectangle r1, Rectangle r2)
 {
     Rectangle inter;
-    if (r1.p1.x < r2.p2.x || r1.p2.x > r2.p1.x || r1.p1.y < r2.p2.y || r1.p2.y > r2.p1.y) // не пересекаются
+    if (r1.p1.x < r2.p2.x &&  r1.p2.x <= r2.p1.x) // не пересекаются
     {
         inter.p1.x = inter.p1.y = inter.p2.x = inter.p2.y = 0;
     }
@@ -36,8 +22,17 @@ Rectangle intersect(Rectangle r1, Rectangle r2)
        inter.p1.x = r1.p1.x < r2.p1.x ? r2.p1.x : r1.p1.x;
        inter.p2.x = r1.p2.x < r2.p2.x ? r1.p2.x : r2.p2.x;
        inter.p1.y = r1.p1.y < r2.p1.y ? r1.p1.y : r2.p1.y;
-       inter.p2.y = r1.p2.y < r2.p2.y ? r2.p2.y : r1.p2.y;
+       inter.p2.y = r1.p2.y < r2.p2.y ? r1.p2.y : r2.p2.y;
     }
     return inter;
 }
+
+int main(){
+
+    Rectangle r1{}, r2{}, n1{};
+    cout << "Введите координаты х, у начиная с прямоугольника, расположенного ближе к оси оу, начиная с координаты левого угла: " << endl;
+    cin >> r1.p1.x >> r1.p1.y >>r1.p2.x >> r1.p2.y >> r2.p1.x >> r2.p1.y>> r2.p2.x >> r2.p2.y;
+
+    n1 = intersect(r1, r2);
+    cout <<"("<< n1.p1.x<< " "<< n1.p1.y << ")," << "("<< n1.p2.x<< " "<< n1.p2.y << "),"<< endl;
 }
