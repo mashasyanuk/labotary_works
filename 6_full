@@ -1,0 +1,269 @@
+#include <iostream>
+#include <math.h>
+#include <iomanip>
+using namespace std;
+
+int option{};
+int Menu() {
+    cout << "____________________________________________________________________________" << endl;
+    cout << "***   Набор задач по запросу:   ***"<< endl;
+    cout << "1 - Добавить ко времени определенное количество секунд" << endl;
+    cout << "2 - Работа с историческими данными" << endl;
+    cout << "3 - Взаимное расположение прямоугольников" << endl;
+    cout << "____________________________________________________________________________" << endl;
+    cin >> option;
+}
+
+struct DATES{
+    int year{};
+    char name[50];
+};
+
+struct Point{
+    int x{}, y{};
+};
+
+struct Rectangle{
+    Point p1{}, p2{};
+};
+
+struct Time {
+    int hours{}, minutes{}, seconds{};
+};
+
+Rectangle intersect(Rectangle r1, Rectangle r2)
+{
+    Rectangle inter;
+    if (r1.p1.x < r2.p2.x &&  r1.p2.x <= r2.p1.x) // не пересекаются
+    {
+        inter.p1.x = inter.p1.y = inter.p2.x = inter.p2.y = 0;
+    }
+    else
+    {
+        inter.p1.x = r1.p1.x < r2.p1.x ? r2.p1.x : r1.p1.x;
+        inter.p2.x = r1.p2.x < r2.p2.x ? r1.p2.x : r2.p2.x;
+        inter.p1.y = r1.p1.y < r2.p1.y ? r1.p1.y : r2.p1.y;
+        inter.p2.y = r1.p2.y < r2.p2.y ? r1.p2.y : r2.p2.y;
+    }
+    return inter;
+}
+
+Time NextTime(Time now, int delta)
+{
+    Time next=now;
+    next.seconds = 3600*now.hours + 60*now.minutes + now.seconds+delta;
+    next.hours = next.seconds/3600;
+    while(next.hours>=24){
+        next.hours=next.hours-24;
+    }
+    next.minutes = (next.seconds - next.hours*3600)/60;
+    next.seconds = next.seconds - 3600*next.hours - 60*next.minutes;
+    return next;
+}
+
+void Sort(DATES* d, int n){
+    int vibor{};
+    cout << "Для сортировки по датам введите 1 \n"<< "Для сортировки событий введите 2 \n";
+    cin >> vibor;
+    switch (vibor){
+        case 1: //date
+            for(int i{}; i<n; i++){
+                for (int j=i+1; j<n; j++ ){
+                    if(d[i].year > d[j].year){
+                         DATES Buffer;
+                         Buffer.year=d[j].year;
+                         strcpy(Buffer.name, d[j].name);
+                         d[j].year=d[i].year;
+                         strcpy(d[j].name, d[i].name);
+                         d[i].year=Buffer.year;
+                         strcpy(d[i].name, Buffer.name);
+                    }
+                }
+            }
+            break;
+        case 2: //name
+            for(int i{}; i<n; i++){
+                for (int j=i+1; j<n; j++ ){
+                    if(d[i].name > d[j].name){
+                        DATES Buffer;
+                        Buffer.year=d[j].year;
+                        strcpy(Buffer.name, d[j].name);
+                        d[j].year=d[i].year;
+                        strcpy(d[j].name, d[i].name);
+                        d[i].year=Buffer.year;
+                        strcpy(d[i].name, Buffer.name);
+                    }
+                }
+            }
+            break;
+        default:
+            cout << "Введено неправильное значение. \n" ;
+            break;
+    }
+    for(int i{}; i<n; i++){
+        cout << fixed << setw(5) << d[i].year << "  " << d[i].name << endl;
+    }
+}
+
+void Search(DATES* d, int n){
+    int sum{}, need{};
+
+    for(int i{}; i<n; i++){
+        for (int j=i+1; j<n; j++ ){
+            sum+=abs(d[i].year-d[j].year);
+        }
+    }
+    need=sum/n;
+    cout << "Средний интервал между датами: " << need << endl;
+
+}
+
+void Most_often(DATES* d, int n){
+    char max_letter{};
+    int count=1, max{};
+
+    for(int i{}; i<n; i++){
+        for (int j=i+1; j<n; j++ ){
+            if(d[i].name > d[j].name){
+                DATES Buffer;
+                Buffer.year=d[j].year;
+                strcpy(Buffer.name, d[j].name);
+                d[j].year=d[i].year;
+                strcpy(d[j].name, d[i].name);
+                d[i].year=Buffer.year;
+                strcpy(d[i].name, Buffer.name);
+            }
+        }
+    }
+    char current=d[0].name[0];
+    for(int i=1; i<n; i++){
+        if(d[i].name[0]==current){
+            count++;
+        }
+        else{
+            if(count>max){
+                max=count;
+                max_letter=current;
+            }
+            current=d[i].name[0];
+            count=1;
+        }
+    }
+    if(count>max){
+        max=count;
+    }
+
+    if(max>1)
+        cout << "Наиболее часто встречающаяся буква:  " << max_letter<<", число совпадений: " << max << endl;
+    else
+        cout << "Первые буквы всех событий разные \n" ;
+}
+
+void time_one(){
+    Time t, t_next;
+    int delta{};
+    cout << "Введите начальное время в формате чч мм сс через пробел:" << endl;
+    cin >> t.hours >> t.minutes >> t.seconds;
+    while(t.hours>24 || t.minutes>59 || t.seconds>59) {
+        if (t.hours>24) {
+            cout << "Введено неверное число часов, введите число с 00 до 23:" << endl;
+            cin >> t.hours;
+        }
+        else if (t.minutes > 59) {
+            cout << "Введено неверное число минут, введите число с 00 до 59:" << endl;
+            cin >> t.minutes;
+        }
+        else if (t.seconds>59){
+            cout << "Введено неверное число секунд, введите число с 00 до 59:" << endl;
+            cin >> t.seconds;
+        }
+    }
+    cout <<"Введите разницу во времени:"<< endl;
+    cin >> delta;
+
+    t_next =NextTime(t, delta);
+    cout << "Текущее время:          " << t.hours<< ":"<<  t.minutes << ":"<<t.seconds  << endl;
+    cout << "Время через "<< delta<<" секунд: " ;
+    if(t_next.hours<10)
+        cout<< "0"<<t_next.hours;
+    else
+        cout << t_next.hours;
+    if(t_next.minutes<10)
+        cout << ":0"<<  t_next.minutes;
+    else
+        cout << ":"<<  t_next.minutes;
+    if(t_next.seconds<10)
+        cout << ":0"<<t_next.seconds  << endl;
+    else
+        cout << ":"<<t_next.seconds  << endl;
+
+}
+void history_two(){
+    int amount{};
+    cout <<"Введите количество исторических событий, которые хотите занести в базу данных:"<<endl;
+    cin >> amount;
+    DATES* d=new DATES[amount];
+
+    for(int i{}; i<amount; i++){
+        cout << "Введите год события:" << endl;
+        cin >> d[i].year ;
+        cout << "Введите название события:" << endl;
+        cin >> d[i].name;
+    }
+    int vibor{};
+    cout << "Для сортировки введите 1 \n" << "Для подсчета среднего интервала между датами введите 2 \n" << "Для вывода наиболее встречающейся первой буквы в названии введите 3 \n" ;
+    cin >> vibor;
+    switch(vibor){
+        case 1:
+            Sort(d, amount);
+            break;
+        case 2:
+            Search(d, amount);
+            break;
+        case 3:
+            Most_often(d, amount);
+            break;
+    }
+
+}
+void rectangles_three(){
+    Rectangle r1{}, r2{}, n1{};
+    cout << "Введите координаты х, у начиная с прямоугольника, расположенного ближе к оси оу, начиная с координаты левого угла: " << endl;
+    cin >> r1.p1.x >> r1.p1.y;
+    cout << endl<<"Введите координаты первого прямоугольника, правого верхнего угла: \n";
+    cin >>r1.p2.x >> r1.p2.y ;
+    cout <<endl<< "Введите координаты второго прямоугольника, левого нижнего угла: \n";
+    cin >> r2.p1.x >> r2.p1.y;
+    cout << endl <<"Введите координаты второго прямоугольника, правого верхнего угла: \n";
+    cin >> r2.p2.x >> r2.p2.y;
+
+    n1 = intersect(r1, r2);
+    cout <<"("<< n1.p1.x<< " "<< n1.p1.y << ")," << "("<< n1.p2.x<< " "<< n1.p2.y << ")"<< endl;
+}
+
+int main(){
+    Menu();
+    switch(option){
+        case 1:
+            time_one();
+            Menu();
+            break;
+        case 2:
+            history_two();
+            Menu();
+            break;
+        case 3:
+            rectangles_three();
+            Menu();
+            break;
+        default:
+            cout << "Введен несуществующий вариант, повторите ввод \n";
+            Menu();
+    }
+    return 0;
+}
+
+
+
+
+
